@@ -1,0 +1,106 @@
+body {
+  margin: 0;
+  overflow: hidden; /* This will prevent scrolling on the body */
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center the chat interface vertically and horizontally */
+}
+
+.chat-interface {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px; /* Set max-width for chat interface */
+  height: 100vh;
+  margin: 0 auto;
+  border: 1px solid #ccc; /* Border color as per wireframe */
+  padding: 10px;
+  background: #fff;
+}
+
+header {
+  font-size: 1.5em;
+  color: #000;
+  text-align: center;
+  padding: 5px;
+  border-bottom: 1px solid #ccc; /* Border color as per wireframe */
+  top: 0;
+  position: sticky;
+  z-index: 100;
+  background-color: #fff;
+}
+
+.messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #f9f9f9; /* Light grey background for the message area */
+  /* display: flex;
+  flex-direction: column; */
+  gap: 10px; /* Adds space between messages */
+  margin-top: 50px;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 5px;
+  max-width: fit-content; /* Make the width of the message fit its content */
+  margin-bottom: 5px; /* Add a little space below each message */
+  word-wrap: break-word; /* Ensure long words do not overflow */
+  /* margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 70%; */
+}
+
+.message.user {
+  background-color: #e0efff;
+  align-self: flex-end;
+  margin-left: auto; /* Align to the right */
+}
+
+.message.bot {
+  background-color: #d0e0ff;
+  align-self: flex-start;
+  margin-right: auto; /* Align to the left */
+}
+
+.input-area {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  position: sticky;
+  bottom: 0;
+}
+
+textarea {
+  flex-grow: 1;
+  padding: 10px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow-y: hidden; /* Prevent default scrollbar */
+  resize: none; /* Disable manual resizing */
+}
+
+input {
+  flex-grow: 1;
+  padding: 10px;
+  margin-right: 5px;
+  border: 1px solid #ccc; /* Border color as per wireframe */
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  background-color: #007bff; /* Blue background for send button */
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
