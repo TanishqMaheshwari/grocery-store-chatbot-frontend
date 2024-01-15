@@ -8,7 +8,11 @@ interface Message {
   text: string;
 }
 
-export const ChatInterface: React.FC = () => {
+interface ChatInterfaceProps {
+  memory: boolean;
+}
+
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({ memory }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
 
@@ -19,15 +23,28 @@ export const ChatInterface: React.FC = () => {
   useEffect(() => {
     // we want to setup all the details for the chatbot here
     const setupChatbot = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:5000/setupChatbot", {
-          method: "POST",
-        });
-
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.error("Error:", error);
+      if (memory) {
+        try {
+          const response = await fetch("http://127.0.0.1:5000/setupChatbotWithMemory", {
+            method: "POST",
+          });
+  
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      } else {
+        try {
+          const response = await fetch("http://127.0.0.1:5000/setupChatbotWithoutMemory", {
+            method: "POST",
+          });
+  
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.error("Error:", error);
+        }
       }
     };
     if (!firstRender) {
@@ -155,14 +172,15 @@ export const ChatInterface: React.FC = () => {
           />
         </div>
         <textarea
+          className="text-input"
           value={inputText}
           ref={textareaRef}
           onChange={(e) => setInputText(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Enter your message..."
           style={{ height: "auto", overflowY: "hidden" }}
-        />
-        <button className="send-button" type="submit">Send</button>
+        /> 
+        <button className="send-button" type="submit">Send chat message</button>
       </form>
     </div>
   );

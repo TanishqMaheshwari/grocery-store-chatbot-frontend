@@ -4,7 +4,8 @@ import { CameraFeed } from './CameraFeed';
 import { SignupForm } from './SignUpForm';
 
 const App: React.FC = () => {
-  const [component, setComponent] = useState("chat") // or qrcode and chat
+  // remember to change the memory to ChatInterface as well!
+  const [component, setComponent] = useState("signup") 
   
   const switchComponent = () => {
     if (component === "signup") {
@@ -18,7 +19,7 @@ const App: React.FC = () => {
     <div className="App">
       {component === "signup" && <SignupForm onSignupComplete={switchComponent}/>}
       {component === "qrcode" && <CameraFeed onScanComplete={switchComponent}/>}
-      {component === "chat" && <ChatInterface/>}
+      {component === "chat" && <ChatInterface memory={true}/>}
     </div>
 
 
