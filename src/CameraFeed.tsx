@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import jsQR from "jsqr";
+import "./CameraFeed.css"
 
-
-
-const CameraFeed: React.FC<{onScanComplete: () => void}> = ({ onScanComplete }) => {
+export const CameraFeed: React.FC<{onScanComplete: () => void}> = ({ onScanComplete }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [qrCode, setQrCode] = useState<string | null>(null);
-  const [scan, setScan] = useState(false   )
+  const [scan, setScan] = useState(false)
 
   useEffect(() => {
     const enableStream = async () => {
@@ -92,7 +91,8 @@ const CameraFeed: React.FC<{onScanComplete: () => void}> = ({ onScanComplete }) 
   }, []);
 
   return (
-    <div>
+    <div className="container">
+      <h1>Welcome to Tan's Grocery Store! Scan your QR code to begin talking to our agent!</h1>
       <video
         ref={videoRef}
         autoPlay
@@ -109,5 +109,3 @@ const CameraFeed: React.FC<{onScanComplete: () => void}> = ({ onScanComplete }) 
     </div>
   );
 };
-
-export default CameraFeed;

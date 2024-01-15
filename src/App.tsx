@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
 import { ChatInterface } from './ChatInterface';
-import CameraFeed from './CameraFeed';
+import { CameraFeed } from './CameraFeed';
 import { SignupForm } from './SignUpForm';
 
 const App: React.FC = () => {
-  // we need to change this state to a string so that we can go from 
-  // component to component 
-  const [scan, setScan] = useState(false) 
-  const handleScanComplete = () => {
-    setScan(true)
+  const [component, setComponent] = useState("chat") // or qrcode and chat
+  
+  const switchComponent = () => {
+    if (component === "signup") {
+      setComponent("qrcode")
+    } else if (component === "qrcode") {
+      setComponent("chat")
+    }
   }
   
   return (
     <div className="App">
-      <SignupForm />
-      {/* Comment this code when running the experiment that does not take into account customer details
-      {scan === false ?
-        <CameraFeed onScanComplete={handleScanComplete}/> :
-        <ChatInterface />
-      } */}
-
-      {/* Uncomment the line below when running the experiment that does not take into account customer details */}
-      {/* <ChatInterface */}
+      {component === "signup" && <SignupForm onSignupComplete={switchComponent}/>}
+      {component === "qrcode" && <CameraFeed onScanComplete={switchComponent}/>}
+      {component === "chat" && <ChatInterface/>}
     </div>
 
 

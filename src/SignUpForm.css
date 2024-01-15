@@ -1,20 +1,21 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: white;
     display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
-    margin: 0;
 }
 
 .container {
     background-color: white;
     padding: 20px;
+    margin: 50px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     width: 80%;
     max-width: 500px;
+    align-self: flex-start;
+    align-items: left;
+    text-align: left;
 }
 
 form {
@@ -40,7 +41,7 @@ textarea {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #0075ff;
     color: white;
     padding: 10px 20px;
     margin-top: 20px;
@@ -50,5 +51,19 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #0046C5;
+}
+
+.qr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full viewport height */
+    text-align: center; /* To center the text of h1 and h2 */
+}
+
+img {
+    max-width: 100%; /* To ensure the image is responsive and doesn't overflow */
+    height: auto; /* To maintain the aspect ratio of the image */
 }

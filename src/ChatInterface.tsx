@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./ChatInterface.css"; // Make sure this is correctly pointing to your CSS file
-import { playAudio } from "./playAudio"
+import { playAudio } from "./playAudio";
 import { AudioInterface } from "./AudioInterface";
 
 interface Message {
@@ -14,6 +14,27 @@ export const ChatInterface: React.FC = () => {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null); // Create a ref for the textarea
   const messagesEndRef = useRef<HTMLDivElement>(null); // Create a ref for the messages container
+  var firstRender = false;
+
+  useEffect(() => {
+    // we want to setup all the details for the chatbot here
+    const setupChatbot = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/setupChatbot", {
+          method: "POST",
+        });
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    if (!firstRender) {
+      firstRender = true;
+      setupChatbot();
+    }
+  }, []); // Empty dependency array means this runs once after the first render
 
   useEffect(() => {
     // Adjust the height whenever messages change
@@ -29,10 +50,12 @@ export const ChatInterface: React.FC = () => {
       const newMessage: Message = { author: "user", text: inputText };
       setMessages([...messages, newMessage]);
 
-      // send message to backend and receive chatbot response 
+      // send message to backend and receive chatbot response
       const formData = new FormData();
       formData.append("text", inputText);
       formData.append("message_type", "text");
+
+      console.log(formData);
 
       try {
         const response = await fetch("http://127.0.0.1:5000/text", {
@@ -42,11 +65,14 @@ export const ChatInterface: React.FC = () => {
 
         const data = await response.json();
         playAudio(data.chatbot_audio);
-        
-        const botResponse: Message = { author: "bot", text: data.chatbot_response };
+
+        const botResponse: Message = {
+          author: "bot",
+          text: data.chatbot_response,
+        };
         setMessages((currentMessages) => [...currentMessages, botResponse]);
       } catch (error) {
-        console.error("Error:", error)
+        console.error("Error:", error);
       }
 
       setInputText("");
@@ -59,7 +85,8 @@ export const ChatInterface: React.FC = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) { // Prevents sending message when Shift+Enter is pressed
+    if (e.key === "Enter" && !e.shiftKey) {
+      // Prevents sending message when Shift+Enter is pressed
       e.preventDefault(); // Prevents adding a new line in textarea
       sendMessage();
     }
@@ -69,7 +96,7 @@ export const ChatInterface: React.FC = () => {
     setInputText(e.target.value);
     const current = textareaRef.current;
     if (current) {
-      current.style.height = 'inherit'; // Reset height to recalculate
+      current.style.height = "inherit"; // Reset height to recalculate
       current.style.height = `${e.target.scrollHeight}px`; // Set new height based on content
     }
   };
@@ -94,13 +121,16 @@ export const ChatInterface: React.FC = () => {
 
   // callback function for when the user clicks the "Record Audio Message" button
   const handleAudioMessage = (audio: any) => {
-    console.log(audio)
+    console.log(audio);
     // we are getting the backend response here to add the bot response as well as the user message
     const newMessage: Message = { author: "user", text: audio.user_message };
     setMessages([...messages, newMessage]);
-    const botResponse: Message = {author: "bot", text: audio.chatbot_response}
+    const botResponse: Message = {
+      author: "bot",
+      text: audio.chatbot_response,
+    };
     setMessages((currentMessages) => [...currentMessages, botResponse]);
-  }
+  };
 
   return (
     <div className="chat-interface">
@@ -118,7 +148,12 @@ export const ChatInterface: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
       {/* <form className="input-area" onSubmit={sendMessage}> */}
-      <form className="input-area" onSubmit={handleSubmit}> 
+      <form className="input-area" onSubmit={handleSubmit}>
+        <div className="record-button">
+          <AudioInterface
+            audioFunction={handleAudioMessage}
+          />
+        </div>
         <textarea
           value={inputText}
           ref={textareaRef}
@@ -127,9 +162,8 @@ export const ChatInterface: React.FC = () => {
           placeholder="Enter your message..."
           style={{ height: "auto", overflowY: "hidden" }}
         />
-        <button type="submit">Send</button>
+        <button className="send-button" type="submit">Send</button>
       </form>
-      <AudioInterface audioFunction={handleAudioMessage}/>
     </div>
   );
 };

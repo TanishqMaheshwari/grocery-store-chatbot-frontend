@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh; /* Use the full height of the viewport */
+    width: 100%; /* Use the full width for better alignment */
+    padding: 20px; /* Optional: Add some padding */
+}
+
+video, canvas {
+    /* Add any specific styles for video and canvas here */
+    max-width: 100%; /* This ensures they don't overflow the viewport width */
+}
