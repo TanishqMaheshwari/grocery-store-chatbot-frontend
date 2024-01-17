@@ -75,11 +75,12 @@ export const CameraFeed: React.FC<{onScanComplete: () => void}> = ({ onScanCompl
                 console.error("Error:", error);
               }
             };
-
-            sendQRCode();
-            setScan(true);
-            onScanComplete();
-            // move to the chat interface from here
+            (async () => {
+              await sendQRCode();
+              setScan(true);
+              onScanComplete();
+              // move to the chat interface from here
+            })();            
           }
         }
       }
